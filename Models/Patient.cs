@@ -19,7 +19,7 @@ namespace Backend.Models
         [Column(TypeName = "timestamp without time zone")]
         public DateTime BirthDate { get; set; }
         [Column(TypeName = "timestamp without time zone")]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         [MaxLength(255)]
         public string ChronicDeseases { get; set; } = string.Empty;
         [MaxLength(255)]

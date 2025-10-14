@@ -21,7 +21,7 @@ namespace Backend.Models
         [Column(TypeName = "timestamp without time zone")]
         public DateTime BirthDate { get; set; }
         [Column(TypeName = "timestamp without time zone")]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         [MaxLength(100)]
         public string Specialization { get; set; } = string.Empty;
         [MaxLength(50)]
