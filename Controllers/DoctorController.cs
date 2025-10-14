@@ -1,4 +1,5 @@
 ﻿using Backend.Data;
+using Backend.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -16,7 +17,7 @@ namespace Backend.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var doctors = _applicationDBContext.Doctors.ToList();
+            var doctors = _applicationDBContext.Doctors.ToList().Select(s => s.ToDoctorDto());
 
             return Ok(doctors);
         }
@@ -29,7 +30,7 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
-            return Ok(stock);
+            return Ok(stock.ToDoctorDto());
         }
     }
 }
