@@ -1,5 +1,6 @@
 ﻿using Backend.Data;
 using Backend.Dtos.Doctor;
+using Backend.Interfaces;
 using Backend.Mappers;
 using Backend.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -13,15 +14,17 @@ namespace Backend.Controllers
     public class DoctorController : ControllerBase
     {
         private readonly ApplicationDBContext _applicationDBContext;
-        public DoctorController(ApplicationDBContext applicationDBContext)
+        private readonly IDoctorService _doctorService;
+        public DoctorController(ApplicationDBContext applicationDBContext, IDoctorService doctorService)
         {
             _applicationDBContext = applicationDBContext;
+            _doctorService = doctorService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var doctors = await _applicationDBContext.Doctors.ToListAsync();
+            var doctors = await _doctorService.GetAllAsync();
             var doctorsDto = doctors.Select(s => s.ToDoctorDto());
 
             return Ok(doctorsDto);
