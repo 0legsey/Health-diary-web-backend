@@ -1,6 +1,7 @@
 ﻿using Backend.Data;
 using Backend.Dtos.Doctor;
 using Backend.Mappers;
+using Backend.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,13 +27,13 @@ namespace Backend.Controllers
 
         [HttpGet("{id}")]
         public IActionResult GetById([FromRoute] int id) {
-            var stock = _applicationDBContext.Doctors.Find(id);
+            var doctor = _applicationDBContext.Doctors.Find(id);
 
-            if (stock == null) {
+            if (doctor == null) {
                 return NotFound();
             }
 
-            return Ok(stock.ToDoctorDto());
+            return Ok(doctor.ToDoctorDto());
         }
 
         [HttpPost]
@@ -42,6 +43,30 @@ namespace Backend.Controllers
             _applicationDBContext.Add(doctorModel);
             _applicationDBContext.SaveChanges();
             return CreatedAtAction(nameof(GetById), new { id = doctorModel.Id }, doctorModel.ToDoctorDto());
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateDoctorRequestDto updateDto)
+        {
+            var doctorModel = _applicationDBContext.Doctors.FirstOrDefault(x => x.Id == id);
+
+            if (doctorModel == null) {
+                return NotFound();
+            }
+
+            doctorModel.LicenceNumber = updateDto.LicenceNumber;
+            doctorModel.Email = updateDto.Email;
+            doctorModel.FirstName = updateDto.FirstName;
+            doctorModel.LastName = updateDto.LastName;
+            doctorModel.PhoneNumber = updateDto.PhoneNumber;
+            doctorModel.BirthDate = updateDto.BirthDate;
+            doctorModel.CreatedAt = updateDto.CreatedAt;
+            doctorModel.Specialization = updateDto.Specialization;
+            doctorModel.Experience = updateDto.Experience;
+            doctorModel.Patients = updateDto.Patients;
+
+            _applicationDBContext.SaveChanges();
+            return Ok(doctorModel.ToDoctorDto());
         }
     }
 }
