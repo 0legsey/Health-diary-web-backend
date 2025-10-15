@@ -4,6 +4,7 @@ using Backend.Mappers;
 using Backend.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers
 {
@@ -18,16 +19,17 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var doctors = _applicationDBContext.Doctors.ToList().Select(s => s.ToDoctorDto());
+            var doctors = await _applicationDBContext.Doctors.ToListAsync();
+            var doctorsDto = doctors.Select(s => s.ToDoctorDto());
 
-            return Ok(doctors);
+            return Ok(doctorsDto);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id) {
-            var doctor = _applicationDBContext.Doctors.Find(id);
+        public async Task<IActionResult> GetById([FromRoute] int id) {
+            var doctor = await _applicationDBContext.Doctors.FindAsync(id);
 
             if (doctor == null) {
                 return NotFound();
@@ -37,18 +39,18 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateDoctorRequestDto doctorDto)
+        public async Task<IActionResult> Create([FromBody] CreateDoctorRequestDto doctorDto)
         {
             var doctorModel = doctorDto.ToDoctorFromDoctorDto();
-            _applicationDBContext.Add(doctorModel);
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.AddAsync(doctorModel);
+            await _applicationDBContext.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = doctorModel.Id }, doctorModel.ToDoctorDto());
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateDoctorRequestDto updateDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateDoctorRequestDto updateDto)
         {
-            var doctorModel = _applicationDBContext.Doctors.FirstOrDefault(x => x.Id == id);
+            var doctorModel = await _applicationDBContext.Doctors.FirstOrDefaultAsync(x => x.Id == id);
 
             if (doctorModel == null) {
                 return NotFound();
@@ -65,13 +67,13 @@ namespace Backend.Controllers
             doctorModel.Experience = updateDto.Experience;
             doctorModel.Patients = updateDto.Patients;
 
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.SaveChangesAsync();
             return Ok(doctorModel.ToDoctorDto());
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] int id) {
-            var doctorModel = _applicationDBContext.Doctors.FirstOrDefault(x => x.Id == id);
+        public async Task<IActionResult> Delete([FromRoute] int id) {
+            var doctorModel = await _applicationDBContext.Doctors.FirstOrDefaultAsync(x => x.Id == id);
 
             if (doctorModel == null) { 
                 return NotFound(); 
@@ -79,7 +81,7 @@ namespace Backend.Controllers
 
             _applicationDBContext.Doctors.Remove(doctorModel);
 
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.SaveChangesAsync();
 
             return NoContent();
         }
