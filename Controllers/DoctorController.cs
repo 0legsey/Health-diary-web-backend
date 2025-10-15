@@ -68,5 +68,20 @@ namespace Backend.Controllers
             _applicationDBContext.SaveChanges();
             return Ok(doctorModel.ToDoctorDto());
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute] int id) {
+            var doctorModel = _applicationDBContext.Doctors.FirstOrDefault(x => x.Id == id);
+
+            if (doctorModel == null) { 
+                return NotFound(); 
+            }
+
+            _applicationDBContext.Doctors.Remove(doctorModel);
+
+            _applicationDBContext.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
