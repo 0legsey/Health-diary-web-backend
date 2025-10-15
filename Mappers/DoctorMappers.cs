@@ -21,6 +21,24 @@ namespace Backend.Mappers
                 Experience = doctorModel.Experience,
                 Patients = doctorModel.Patients
             };
+
+        }
+        public static Doctor ToDoctorFromDoctorDto(this CreateDoctorRequestDto doctorDto)
+        {
+            return new Doctor
+            {
+                LicenceNumber = doctorDto.LicenceNumber,
+                Email = doctorDto.Email,
+                FirstName = doctorDto.FirstName,
+                LastName = doctorDto.LastName,
+                PasswordHash = doctorDto.PasswordHash,
+                PhoneNumber = doctorDto.PhoneNumber,
+                BirthDate = doctorDto.BirthDate,
+                CreatedAt = doctorDto.CreatedAt,
+                Specialization = doctorDto.Specialization,
+                Experience = doctorDto.Experience,
+                Patients = doctorDto.Patients
+            };
         }
     }
 }

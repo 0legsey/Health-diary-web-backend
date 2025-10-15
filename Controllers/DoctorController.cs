@@ -1,5 +1,7 @@
 ﻿using Backend.Data;
+using Backend.Dtos.Doctor;
 using Backend.Mappers;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -31,6 +33,15 @@ namespace Backend.Controllers
             }
 
             return Ok(stock.ToDoctorDto());
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateDoctorRequestDto doctorDto)
+        {
+            var doctorModel = doctorDto.ToDoctorFromDoctorDto();
+            _applicationDBContext.Add(doctorModel);
+            _applicationDBContext.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new { id = doctorModel.Id }, doctorModel.ToDoctorDto());
         }
     }
 }
