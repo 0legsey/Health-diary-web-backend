@@ -32,7 +32,7 @@ namespace Backend.Controllers
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id) {
-            var doctor = await _applicationDBContext.Doctors.FindAsync(id);
+            var doctor = await _doctorService.GetByIdAsync(id);
 
             if (doctor == null) {
                 return NotFound();
@@ -45,46 +45,29 @@ namespace Backend.Controllers
         public async Task<IActionResult> Create([FromBody] CreateDoctorRequestDto doctorDto)
         {
             var doctorModel = doctorDto.ToDoctorFromDoctorDto();
-            await _applicationDBContext.AddAsync(doctorModel);
-            await _applicationDBContext.SaveChangesAsync();
+            await _doctorService.CreateAsync(doctorModel);
             return CreatedAtAction(nameof(GetById), new { id = doctorModel.Id }, doctorModel.ToDoctorDto());
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateDoctorRequestDto updateDto)
         {
-            var doctorModel = await _applicationDBContext.Doctors.FirstOrDefaultAsync(x => x.Id == id);
+            var doctorModel = await _doctorService.UpdateAsync(id, updateDto);
 
             if (doctorModel == null) {
                 return NotFound();
             }
 
-            doctorModel.LicenceNumber = updateDto.LicenceNumber;
-            doctorModel.Email = updateDto.Email;
-            doctorModel.FirstName = updateDto.FirstName;
-            doctorModel.LastName = updateDto.LastName;
-            doctorModel.PhoneNumber = updateDto.PhoneNumber;
-            doctorModel.BirthDate = updateDto.BirthDate;
-            doctorModel.CreatedAt = updateDto.CreatedAt;
-            doctorModel.Specialization = updateDto.Specialization;
-            doctorModel.Experience = updateDto.Experience;
-            doctorModel.Patients = updateDto.Patients;
-
-            await _applicationDBContext.SaveChangesAsync();
             return Ok(doctorModel.ToDoctorDto());
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id) {
-            var doctorModel = await _applicationDBContext.Doctors.FirstOrDefaultAsync(x => x.Id == id);
+            var doctorModel = await _doctorService.DeleteAsync(id);
 
             if (doctorModel == null) { 
                 return NotFound(); 
             }
-
-            _applicationDBContext.Doctors.Remove(doctorModel);
-
-            await _applicationDBContext.SaveChangesAsync();
 
             return NoContent();
         }
