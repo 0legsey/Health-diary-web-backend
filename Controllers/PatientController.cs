@@ -1,4 +1,5 @@
-﻿using Backend.Interfaces;
+﻿using Backend.Dtos.Patient;
+using Backend.Interfaces;
 using Backend.Mappers;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,11 @@ namespace Backend.Controllers
     public class PatientController : ControllerBase
     {
         private readonly IPatientService _patientService;
-        public PatientController(IPatientService patientService)
+        private readonly IDoctorService _doctorService;
+        public PatientController(IPatientService patientService, IDoctorService doctorService)
         {
             _patientService = patientService;
+            _doctorService = doctorService;
         }
 
         [HttpGet]
@@ -35,6 +38,21 @@ namespace Backend.Controllers
             }
 
             return Ok(patient.toPatientDto());
+        }
+
+        [HttpPost("{doctorId}")]
+        public async Task<IActionResult> Create([FromRoute] int doctorId, [FromBody] CreatePatientRequestDto patientDto)
+        {
+            if (!await _doctorService.DoctorExists(doctorId))
+            {
+                return BadRequest("Doctor does not exist");
+            }
+
+            var patientModel = patientDto.ToPatientFromPatientDto(doctorId);
+
+            await _patientService.CreateAsync(patientModel);
+
+            return CreatedAtAction(nameof(GetById), new { id = patientModel.Id }, patientModel.toPatientDto());
         }
 
     }

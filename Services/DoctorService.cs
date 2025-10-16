@@ -37,6 +37,11 @@ namespace Backend.Services
             return doctorModel;
         }
 
+        public async Task<bool> DoctorExists(int id)
+        {
+            return await _applicationDbContext.Doctors.AnyAsync(x => x.Id == id);
+        }
+
         public async Task<List<Doctor>> GetAllAsync()
         {
             return await _applicationDbContext.Doctors.Include(d => d.Patients).ToListAsync();
@@ -63,7 +68,6 @@ namespace Backend.Services
             doctorModel.PasswordHash = doctorDto.PasswordHash;
             doctorModel.PhoneNumber = doctorDto.PhoneNumber;
             doctorModel.BirthDate = doctorDto.BirthDate;
-            doctorModel.CreatedAt = doctorDto.CreatedAt;
             doctorModel.Specialization = doctorDto.Specialization;
             doctorModel.Experience = doctorDto.Experience;
             //doctorModel.Patients = doctorDto.Patients;

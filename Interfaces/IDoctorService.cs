@@ -11,5 +11,6 @@ namespace Backend.Interfaces
         Task<Doctor> CreateAsync(Doctor doctorModel);
         Task<Doctor?> UpdateAsync(int id, UpdateDoctorRequestDto doctorDto);
         Task<Doctor> DeleteAsync(int id);
+        Task<bool> DoctorExists(int id);
     }
 }

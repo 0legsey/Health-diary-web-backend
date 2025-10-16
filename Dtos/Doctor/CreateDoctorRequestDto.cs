@@ -14,7 +14,6 @@ namespace Backend.Dtos.Doctor
         public string PasswordHash { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public DateTime BirthDate { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string Specialization { get; set; } = string.Empty;
         public string Experience { get; set; } = string.Empty;
         public List<PatientDto> Patients { get; set; } = new List<PatientDto>();

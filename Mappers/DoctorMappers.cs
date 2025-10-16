@@ -34,7 +34,6 @@ namespace Backend.Mappers
                 PasswordHash = doctorDto.PasswordHash,
                 PhoneNumber = doctorDto.PhoneNumber,
                 BirthDate = doctorDto.BirthDate,
-                CreatedAt = doctorDto.CreatedAt,
                 Specialization = doctorDto.Specialization,
                 Experience = doctorDto.Experience,
             };

@@ -23,5 +23,21 @@ namespace Backend.Mappers
             };
 
         }
+        public static Patient ToPatientFromPatientDto(this CreatePatientRequestDto patientDto, int doctorId)
+        {
+            return new Patient
+            {
+                Email = patientDto.Email,
+                FirstName = patientDto.FirstName,
+                LastName = patientDto.LastName,
+                PasswordHash = patientDto.PasswordHash,
+                PhoneNumber = patientDto.PhoneNumber,
+                BirthDate = patientDto.BirthDate,
+                ChronicDeseases = patientDto.ChronicDeseases,
+                Allergies = patientDto.Allergies,
+                DoctorId = doctorId
+            };
+        }
+
     }
 }

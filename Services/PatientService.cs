@@ -13,6 +13,13 @@ namespace Backend.Services
             _applicationDbContext = applicationDbContext;
         }
 
+        public async Task<Patient> CreateAsync(Patient patientModel)
+        {
+            await _applicationDbContext.Patients.AddAsync(patientModel);
+            await _applicationDbContext.SaveChangesAsync();
+            return patientModel;
+        }
+
         public async Task<List<Patient>> GetAllAsync()
         {
             return await _applicationDbContext.Patients.ToListAsync();
