@@ -39,12 +39,12 @@ namespace Backend.Services
 
         public async Task<List<Doctor>> GetAllAsync()
         {
-            return await _applicationDbContext.Doctors.ToListAsync();
+            return await _applicationDbContext.Doctors.Include(d => d.Patients).ToListAsync();
         }
 
         public async Task<Doctor?> GetByIdAsync(int id)
         {
-            return await _applicationDbContext.Doctors.FindAsync(id);
+            return await _applicationDbContext.Doctors.Include(d => d.Patients).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Doctor?> UpdateAsync(int id, UpdateDoctorRequestDto doctorDto)

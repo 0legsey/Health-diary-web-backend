@@ -1,4 +1,5 @@
-﻿using Backend.Models;
+﻿using Backend.Dtos.Patient;
+using Backend.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +17,6 @@ namespace Backend.Dtos.Doctor
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public string Specialization { get; set; } = string.Empty;
         public string Experience { get; set; } = string.Empty;
-        //public List<Patient> Patients { get; set; } = new List<Patient>();
+        public List<PatientDto> Patients { get; set; } = new List<PatientDto>();
     }
 }
