@@ -19,7 +19,7 @@ namespace Backend.Mappers
                 CreatedAt = doctorModel.CreatedAt,
                 Specialization = doctorModel.Specialization,
                 Experience = doctorModel.Experience,
-                Patients = doctorModel.Patients
+                //Patients = doctorModel.Patients
             };
 
         }
@@ -37,7 +37,7 @@ namespace Backend.Mappers
                 CreatedAt = doctorDto.CreatedAt,
                 Specialization = doctorDto.Specialization,
                 Experience = doctorDto.Experience,
-                Patients = doctorDto.Patients
+                //Patients = doctorDto.Patients
             };
         }
     }

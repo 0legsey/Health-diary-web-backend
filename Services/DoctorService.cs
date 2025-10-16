@@ -66,7 +66,7 @@ namespace Backend.Services
             doctorModel.CreatedAt = doctorDto.CreatedAt;
             doctorModel.Specialization = doctorDto.Specialization;
             doctorModel.Experience = doctorDto.Experience;
-            doctorModel.Patients = doctorDto.Patients;
+            //doctorModel.Patients = doctorDto.Patients;
 
             await _applicationDbContext.SaveChangesAsync();
 
