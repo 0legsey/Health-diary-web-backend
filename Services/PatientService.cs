@@ -17,5 +17,10 @@ namespace Backend.Services
         {
             return await _applicationDbContext.Patients.ToListAsync();
         }
+
+        public async Task<Patient?> GetByIdAsync(int id)
+        {
+            return await _applicationDbContext.Patients.FindAsync(id);
+        }
     }
 }

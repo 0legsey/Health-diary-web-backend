@@ -23,5 +23,19 @@ namespace Backend.Controllers
 
             return Ok(patientDto);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute]int id)
+        {
+            var patient = await _patientService.GetByIdAsync(id);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(patient.toPatientDto());
+        }
+
     }
 }
